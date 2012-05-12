@@ -1,2 +1,71 @@
-There will be more to read soon!
-/John Kakoulides
+jBlitter is a jQuery plugin that allows you to create animated buttons for your web applications. 
+Author: John Kakoulides
+Full article with examples: http://glowfilter.com/blog/jblitter-animated-html5-canvas-buttons/
+
+How jBlitter works
+
+The plugin uses a technique that uses image sprites to create animations, and is the foundation of animation in most games during the 2d game era. Image sprites can be thought of as short film strips that are played at the right moment, such as when a character in a video game throws a punch, or something explodes.
+
+How to use the plugin
+
+Create your animation using any animation software that allows you to export .PNG sequences, such as After Effects, 3d Studio Max, Blender, Flash, etc. Export your animation as a .PNG sequence, and stitch it together as a continuous sprite. This could be a monotonous task, unless you use an automated method such as a Photoshop action or other script to stitch the .PNG sequence together. I use a cobbled together Python script to stitch my sequences together. The Imagemagick software suite can also be used to create a sprite. In Imagemagick, these are called "montages".
+
+Create your html canvas:
+<pre>
+<canvas id="button" width="260" height="80">
+	<a alt="alternate content" href="http://glowfilter.com">glowfilter.com</a>
+</canvas>
+</pre>
+
+The width and height attributes of the canvas should ideally match the width and height a single frame of your animation.
+
+Important! Notice the anchor tag inside the canvas. By default, the plugin uses this anchor tag to extract the link that will be used when users click on the button. This also serves as a fallback for browsers that don't support the canvas tag. It also gives search engines a link to follow, making is solution SEO friendly. This anchor tag is not required. If you don't include the anchor tag, it's up to you to add onclick events to the canvas for user interaction. You can also use the 'callback' option to pass a function to be called when the button is clicked.
+
+Load jQuery and jBlitter libraries
+
+Call the plugin within your DOM ready function, or any time jQuery and jBlitter are available:
+
+$(function(){
+  $("#button").jBlitter({
+    'resource':'/path/to/your/sprite/image.png',
+    'speed':33,
+    'frameWidth':260,
+    'frameHeight':80,
+    'reverse':true,
+    'loop':false,
+    'callback':function(){
+      alert("clicked!");
+    }
+    });
+});
+
+
+
+Options
+
+* resource (required): The url of the image sprite.
+
+* frameWidth (required): The width of a single frame of your sprite.
+
+* frameHeight (required): The height of a single frame of your sprite.
+
+* speed (optional): The number of milliseconds between each frame. The default is 33 milliseconds, which translates roughly to 24 frames per second.
+
+* reverse (optional): Determines the rollout behavior of the button. By default, this is set to "true", meaning on mouseout, the animation plays in reverse. If false is specified, the animation jumps to frame 1 on rollout.
+
+* loop (optional): Determines the mouseover behavior of the button. By default, this is set to "false", meaning if your don't mouse out, the animation loops. If true is specified, the animation plays through once and stops on the last frame.
+
+* callback (optional): a function to be called on click. Very useful for injecting analytics code.
+		
+	
+Tips:
+
+* Sprites can be multi-row, meaning if you have many frames, you can break them into two or more rows to avoid overly wide sprites. In fact, some browsers don't support images over a certain width. I've found Safari is one of these browsers.
+
+* You must ensure each column of each row has an image, or there will be a flicker in your animation.
+
+* You don't have to add an anchor tag inside the canvas. You can specify your own onclick events that bind to the canvas. It is a good idea to specify an anchor tag however because it gives search engines a link to follow.
+
+* Set a css style of "cursor:pointer;" on the canvas. This will make your canvas more "button-like" by giving your users a visual cue that the button is clickable.
+
+* These types of animations can get very large, very quickly. Design your animations so that they look great, but are also small in file size. pngs and gifs generally look the better than jpegs.
