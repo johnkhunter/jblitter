@@ -24,18 +24,19 @@
    */
    
   $.fn.jBlitter = function(options){
-    var settings = {
-      'resource':'test.png',
-      'speed':33,
-      'frameWidth':100,
-      'frameHeight':100,
-      'reverse':true,
-      'loop':false,
-      'callback':null
-    };
     
     return this.each(function(){
-      var opts = $.extend(settings,options);
+      var settings = {
+        'resource':'test.png',
+        'speed':33,
+        'frameWidth':100,
+        'frameHeight':100,
+        'reverse':true,
+        'loop':false,
+        'callback':null
+      };
+      
+      var opts = $.extend($.extend(settings,this.dataset),options);
       var canvas = this;
       var $canvas = $(this);
       var link = $canvas.find("a").first().attr("href");
